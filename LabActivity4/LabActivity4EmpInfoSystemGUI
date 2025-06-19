@@ -1,0 +1,44 @@
+
+import java.util.Scanner;
+
+public class LabActivity4EmpInfoSystemGUI {
+    public static void main(String[] args) {
+        // Create a Scanner object to read input
+        Scanner scanner = new Scanner(System.in);
+        
+        // Prompt the user for first name
+        System.out.print("First Name: ");
+        String firstName = scanner.nextLine();
+        
+        // Prompt the user for last name
+        System.out.print("Last Name: ");
+        String lastName = scanner.nextLine();
+        
+        // Prompt the user for age
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+        
+        // Prompt the user for hours worked
+        System.out.print("Hours worked: ");
+        double hoursWorked = scanner.nextDouble();
+        
+        // Prompt the user for hourly rate
+        System.out.print("Hourly rate: ");
+        double hourlyrate = scanner.nextDouble();
+        
+        // Compute the employee's full name
+        String fullName = firstName + " " + lastName;
+        
+        // Compute the  daily rate
+        double horlyrate = hoursWorked * hourlyrate;
+        
+        // Output the results
+        System.out.println("\nOutout:");
+        System.out.println("Full Name: " + fullName);
+        System.out.println("Age: " + age);
+        System.out.printf("Daily rate: $%.2f\n", hourlyrate);
+        
+        // Close the scanner to avoid memory leaks
+        scanner.close();
+    }
+}

@@ -24,7 +24,7 @@ This project simulates a basic IT ticket management system. It includes activiti
   - Enables updating the status of a ticket (e.g., Open, In Progress, Resolved).
   - Handles data validation and persistence.
 
-### Key Concepts & Implementation Details
+Key Concepts & Implementation Details
 
 - Use of Object-Oriented Programming (OOP) to model tickets and users.
 - Data storage can be handled via SQLite database, SharedPreferences, or in-memory data structures.

@@ -31,6 +31,8 @@ This project simulates a basic IT ticket management system. It includes activiti
 - Implements basic CRUD operations.
 - User interface designed with XML layouts, focusing on usability.
 
+---
+
 ### **LabActivity1 - EmployeeInformationSystem**
 
 **Purpose:**  

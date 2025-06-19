@@ -5,10 +5,10 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CalculatorApp extends JFrame {
+public class FinalLabExam extends JFrame {
     private final JTextField display;
 
-    public CalculatorApp() {
+    public FinalLabExam() {
         setTitle("Java Swing Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 550);

@@ -1,6 +1,6 @@
 # MY JAVA RESPOSITOR
 
-This repository contains several activities and projects related to programming, GUI development, and system implementation. Each activity is organized into separate folders for clarity. Below is a detailed description of each activity, including its purpose, key features, and relevant information to understand the code base
+This repository contains several activities and projects related to programming, GUI development, and system implementation. Each activity is organized into separate folders for clarity. Below is a detailed description of each activity, including its purpose and key features to understand the code base
 
 ---
 

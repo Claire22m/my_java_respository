@@ -1,150 +1,139 @@
-
-package LabActivity5;
-
 import java.awt.*;
 import java.awt.event.*;
 
-public class LabActivity5QuizAppAWT extends Frame {
+public class QuizApp extends Frame implements ActionListener {
+    // Questions, options, and answers
+    String[] questions = {
+        "Which language is used for Android development?",
+        "What is the result of 2 + 2 * 2?",
+        "Which data structure uses LIFO principle?"
+    };
 
-    // Array for questions   
-    String[] questions = {"Mic is example of which type of device, Output, or Input?", 
-                          "What is the full Form of RAM?",
-                          "Who is known as the Father of Computers?"
-                      };
-    // Array for options
     String[][] options = {
-                          {"A.Input", "B.Output", "C.Storage", "D.None Of The above"},
-                          {"A.Random Access Memory", "B.Read Only Memory", "C.Random All Memory", "D.None Of The above"},
-                          {"A.Blaise Pascal", "B.Charles Babbage", "C.Alan Turing", "D.None Of The above"}
-                      };
-    //Array for Answerkey
-    String[] answerKey = {"A.Input", "A.Random Access Memory", "B.Charles Babbage"};
+        {"Swift", "Java", "Python", "Kotlin"},
+        {"6", "8", "4", "10"},
+        {"Queue", "Stack", "Array", "Linked List"}
+    };
 
-    // Labels and Checkbox   
-    Label lQuestion;
-    Label warnLabel;
-    Checkbox rOptionOne, rOptionTwo, rOptionThree, rOptionFour;
-    CheckboxGroup optionGroup;
+    int[] answers = {1, 1, 1}; // Indexes of correct options
 
-    // Panels
-    Panel FPanel, SPanel, TPanel,FTPanel;
+    // UI Components
+    Label questionLabel;
+    CheckboxGroup choicesGroup;
+    Checkbox[] choiceButtons = new Checkbox[4];
+    Button nextButton;
+    Panel choicesPanel;
 
-    // Button     
-    Button next;
-     
-    // Counters
-    int count = 0;
+    // State variables
+    int currentQuestion = 0;
     int score = 0;
 
-    // Font
-    Font font;
-    Font SFont;
-
-    public LabActivity5QuizAppAWT() {
-        setTitle("Quiz App AWT");
-        setVisible(true);
+    public QuizApp() {
+        // Setup frame
         setSize(500, 300);
-        setLayout(new GridLayout(3, 1));
-        font  = new Font("Arial", Font.BOLD , 16);
-        SFont = new Font("Arial", Font.PLAIN, 12);
-        
+        setLayout(new BorderLayout());
+        setTitle("Quiz App");
 
-        // First panel for question
-        FPanel = new Panel(new FlowLayout(FlowLayout.CENTER));
-        lQuestion = new Label("", Label.CENTER);
-        lQuestion.setFont(font);
-        FPanel.add(lQuestion);
-        add(FPanel);
+        // Question Label
+        questionLabel = new Label("", Label.CENTER);
+        questionLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        add(questionLabel, BorderLayout.NORTH);
 
-        // Second panel for radio buttons
-        SPanel = new Panel(new GridLayout(2, 2));
-        optionGroup  = new CheckboxGroup();
-        rOptionOne   = new Checkbox("", optionGroup, false);
-        rOptionOne.setForeground  (Color.MAGENTA);
-        SPanel.add(rOptionOne);
-        rOptionTwo   = new Checkbox("", optionGroup, false);
-        rOptionTwo.setForeground  (Color.MAGENTA);
-        SPanel.add(rOptionTwo);
-        rOptionThree = new Checkbox("", optionGroup, false);
-        rOptionThree.setForeground(Color.MAGENTA);
-        SPanel.add(rOptionThree);
-        rOptionFour  = new Checkbox("", optionGroup, false);
-        rOptionFour.setForeground(Color.MAGENTA);
-        SPanel.add(rOptionFour);
-        add(SPanel);
+        // Choices Panel
+        choicesPanel = new Panel();
+        choicesPanel.setLayout(new GridLayout(4, 1));
 
-        // Third Panel for warning label and next button
-        FTPanel = new Panel(new GridLayout(2,1));
-        TPanel = new Panel(new BorderLayout());
-        warnLabel = new Label("Please select an answer.", Label.CENTER);
-        warnLabel.setFont(SFont);
-        warnLabel.setVisible(false); 
-        next = new Button("Next");
-        next.setFont(font);
-        FTPanel.add(warnLabel);
-        FTPanel.add(next);
-        TPanel.add(FTPanel, BorderLayout.SOUTH);
-        add(TPanel);
-        
-        // Show first question
-        loadQuestion(count);
+        choicesGroup = new CheckboxGroup();
+        for (int i = 0; i < 4; i++) {
+            choiceButtons[i] = new Checkbox("", choicesGroup);
+            styleCheckbox(choiceButtons[i]);
+            choicesPanel.add(choiceButtons[i]);
+        }
+        add(choicesPanel, BorderLayout.CENTER);
 
-        // Action listener for next button
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Checkbox selected = optionGroup.getSelectedCheckbox();
-                    if (selected == null) {
-                        warnLabel.setVisible(true);
-                    } else {
-                       warnLabel.setVisible(false); 
-                       checkAnswer();
-                          count++;
-                    if (count < questions.length) {
-                        loadQuestion(count);
-                    } else {
-                        showResult();
-                    }
-                }
+        // Next Button
+        nextButton = new Button("Next");
+        styleButton(nextButton);
+        nextButton.addActionListener(this);
+        Panel bottomPanel = new Panel();
+        bottomPanel.add(nextButton);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        // Window close operation
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
             }
         });
-        // Closing window
-        addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    dispose(); 
-                }
-            });   
+
+        // Load first question
+        loadQuestion();
+
+        setVisible(true);
     }
 
-    // Loading Questions
-    public void loadQuestion(int index) {
-        lQuestion.setText    (questions[index]);
-        rOptionOne.setLabel  (options[index][0]);
-        rOptionTwo.setLabel  (options[index][1]);
-        rOptionThree.setLabel(options[index][2]);
-        rOptionFour.setLabel (options[index][3]);
-        optionGroup.setSelectedCheckbox(null); 
+    // Apply styles to checkboxes
+    private void styleCheckbox(Checkbox cb) {
+        cb.setFont(new Font("Arial", Font.PLAIN, 14));
+        // Additional customization can be added here
     }
 
-    // Checking selected answer
-    private void checkAnswer() {
-        Checkbox selected = optionGroup.getSelectedCheckbox();
-            if (selected != null && selected.getLabel().equals(answerKey[count])) {
-                score++;
+    // Apply styles to button
+    private void styleButton(Button btn) {
+        btn.setFont(new Font("Arial", Font.BOLD, 14));
+        // Additional customization can be added here
+    }
+
+    // Load question and options
+    private void loadQuestion() {
+        if (currentQuestion < questions.length) {
+            questionLabel.setText(questions[currentQuestion]);
+            for (int i = 0; i < 4; i++) {
+                choiceButtons[i].setLabel(options[currentQuestion][i]);
+                choiceButtons[i].setState(false);
+            }
+        } else {
+            showFinalScore();
         }
     }
-    // Showing score 
-    private void showResult() {
-        lQuestion.setText("Quiz Completed! Your Score: " + score + " out of " + questions.length); 
-        rOptionOne.setEnabled   (false);
-        rOptionTwo.setEnabled   (false);
-        rOptionThree.setEnabled (false);
-        rOptionFour.setEnabled  (false);
-        next.setEnabled         (false);
+
+    // Show final score
+    private void showFinalScore() {
+        questionLabel.setText("Quiz Completed! Your Score: " + score + " out of " + questions.length);
+        for (Checkbox cb : choiceButtons) {
+            cb.setEnabled(false);
+        }
+        nextButton.setLabel("Finish");
+        nextButton.removeActionListener(this);
+        nextButton.addActionListener(e -> System.exit(0));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Check selected answer
+        int selectedIndex = -1;
+        for (int i = 0; i < 4; i++) {
+            if (choiceButtons[i].getState()) {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        if (selectedIndex == -1) {
+            // No selection made
+            return;
+        }
+
+        // Update score if correct
+        if (selectedIndex == answers[currentQuestion]) {
+            score++;
+        }
+
+        currentQuestion++;
+        loadQuestion();
     }
 
     public static void main(String[] args) {
-        new LabActivity5QuizAppAWT();
+        new QuizApp();
     }
-}
+    }
